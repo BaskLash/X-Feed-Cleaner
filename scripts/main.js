@@ -1,48 +1,65 @@
 // content.js
 
-// ────────────────────────────────────────────────
-// Selektoren (passen bei Bedarf an – aktuell meist ausreichend)
-const GROK_SELECTORS = [
-  '[aria-label="Grok"]'
-];
-
-const GROK_SELECTOR = GROK_SELECTORS.join(', ');
+const GROK_SELECTOR = '[aria-label="Grok"]';
+const FOLLOW_SELECTOR = '[aria-label="Follow"]';
 
 function toggleGrok(hide) {
-  document.querySelectorAll(GROK_SELECTOR).forEach(el => {
-    el.style.display = hide ? 'none' : '';
+  const elements = document.querySelectorAll(GROK_SELECTOR);
+  elements.forEach(el => { el.style.display = hide ? 'none' : ''; });
+  return elements.length > 0; // Gibt true zurück, wenn Elemente gefunden wurden
+}
+
+function toggleFollowSuggestions(hide) {
+  const elements = document.querySelectorAll(FOLLOW_SELECTOR);
+  elements.forEach(el => { el.style.display = hide ? 'none' : ''; });
+  return elements.length > 0;
+}
+
+function applySettings(settings) {
+  const grokFound = toggleGrok(settings.hideGrok === true);
+  const followFound = toggleFollowSuggestions(settings.hideFollow === true);
+  return { grokFound, followFound };
+}
+
+// Intervall-Logik für das initiale Laden
+function startInitializationInterval() {
+  const checkInterval = setInterval(() => {
+    chrome.storage.local.get(["hideGrok", "hideFollow"], (settings) => {
+      const results = applySettings(settings);
+      
+      // Stop-Bedingung: Wenn beide aktivierten Funktionen ihre Ziele gefunden haben
+      const needGrok = settings.hideGrok === true;
+      const needFollow = settings.hideFollow === true;
+
+      const grokOk = !needGrok || (needGrok && results.grokFound);
+      const followOk = !needFollow || (needFollow && results.followFound);
+
+      if (grokOk && followOk) {
+        clearInterval(checkInterval);
+        console.log("DOM-Elemente gefunden und bearbeitet. Intervall gestoppt.");
+      }
+    });
+  }, 500); // Prüft alle 500ms
+
+  // Sicherheitshalber nach 10 Sekunden stoppen, falls Elemente gar nicht existieren
+  setTimeout(() => clearInterval(checkInterval), 10000);
+}
+
+// ────────────────────────────────────────────────
+// Event Listener (Bleiben gleich für sofortige Updates)
+
+chrome.runtime.onMessage.addListener((message) => {
+  if (message?.action !== "toggleSetting") return;
+  chrome.storage.local.get(["hideGrok", "hideFollow"], (settings) => {
+    applySettings(settings);
   });
-}
-
-// Zentrale Apply-Funktion (später leicht erweiterbar für mehr Settings)
-function applyGrokSetting(hide = false) {
-  toggleGrok(!!hide);
-}
-
-// ────────────────────────────────────────────────
-// A) Sofort-Reaktion vom Popup (schnellste Möglichkeit)
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message?.action === "toggleSetting" && message.key === "hideGrok") {
-    applyGrokSetting(message.value);
-    // Optional: Bestätigung zurücksenden
-    // sendResponse({ success: true });
-  }
-  // return true;   ← nur wenn du asynchron sendResponse nutzen willst
 });
 
-// ────────────────────────────────────────────────
-// B) Reagiert auf ALLE storage-Änderungen (auch nach Neuladen, von anderem Tab etc.)
-chrome.storage.onChanged.addListener((changes, areaName) => {
-  if (areaName !== 'local') return;
-
-  if ('hideGrok' in changes) {
-    const newValue = changes.hideGrok.newValue;
-    applyGrokSetting(newValue);
-  }
+chrome.storage.onChanged.addListener(() => {
+  chrome.storage.local.get(["hideGrok", "hideFollow"], (settings) => {
+    applySettings(settings);
+  });
 });
 
-// ────────────────────────────────────────────────
-// C) Initial laden (einmalig beim Content-Script-Start)
-chrome.storage.local.get("hideGrok", (result) => {
-  applyGrokSetting(result.hideGrok);
-});
+// Startpunkt
+startInitializationInterval();
