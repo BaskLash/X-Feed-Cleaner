@@ -1,7 +1,6 @@
 let counter = 0;
 
 function autoClickOnce() {
-  /* https://www.blackbox.ai/share/828f1eb9-701d-44b7-a0cf-e922ef31b081 */
   // Suche das div mit role="tablist" und data-testid="ScrollSnap-List"
   const tablist = document.querySelector(
     'div[role="tablist"][data-testid="ScrollSnap-List"]'

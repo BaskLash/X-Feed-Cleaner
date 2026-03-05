@@ -89,5 +89,3 @@ const intervalId = setInterval(() => {
   }
   sideBlock();
 }, 1000); // Check every 1 second
-
-stopWatchToggle();

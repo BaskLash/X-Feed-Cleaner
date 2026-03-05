@@ -29,34 +29,5 @@ document.addEventListener("DOMContentLoaded", () => {
     updateToggleText(isChecked); // Aktualisiere den Text sofort
   });
 
-  // Dynamisches Update der Zeit
-  const today = new Date().toISOString().split("T")[0]; // Hol das heutige Datum im Format YYYY-MM-DD
-
-  function updateTodayTime() {
-    chrome.storage.local.get(["wastedTime"], (res) => {
-      const wastedTime = res.wastedTime || {};
-      const todayTime = wastedTime[today] || "No time spent today"; // Fallback-Wert, wenn nichts für heute vorhanden ist
-      if (todayTime == "No time spent today") {
-        document.getElementById("timeConsumption").innerHTML = `${todayTime}`;
-      } else {
-        document.getElementById(
-          "timeConsumption"
-        ).innerHTML = `Time spent today: ${todayTime}`;
-      }
-    });
-  }
-
-  // Update alle 1 Sekunde
-  updateTodayTime(); // Initialer Aufruf
   setInterval(updateTodayTime, 1000);
-});
-
-document
-  .getElementById("timeConsumption")
-  .addEventListener("click", function () {
-    chrome.tabs.create({ url: chrome.runtime.getURL("/pages/timetable.html") });
-  });
-
-document.getElementById("goToFAQ").addEventListener("click", function () {
-  chrome.tabs.create({ url: chrome.runtime.getURL("/pages/FAQ.html") });
 });
