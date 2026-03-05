@@ -16,16 +16,7 @@
     {
       "matches": ["https://x.com/*", "https://twitter.com/*"],
       "js": [
-        "scripts/communitiesExplore.js",
-        "scripts/communitiesSuggested.js",
-        "scripts/communitiesSuggestedMore.js",
-        "scripts/home.js",
-        "scripts/startUp.js",
-        "scripts/sideBlocking.js",
-        "scripts/cheatBlocker.js",
-        "scripts/autoclickOnce.js",
-        "scripts/replaceFaviconNotyNumber.js",
-        "main.js"
+        "scripts/main.js"
       ]
     }
   ],
