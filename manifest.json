@@ -1,22 +1,31 @@
 {
   "manifest_version": 3,
-  "name": "X Customizer",
-  "version": "2.0.0",
+  "name": "X-Feed Cleaner",
+  "version": "1.0.18",
   "description": "📽️ **Keep Focused, Stay Productive** Removes distracting elements inside X.com (formerly Twitter) for a cleaner experience.",
   "action": {
     "default_popup": "popup.html"
   },
   "icons": {
-    "16": "icon/icon16.png",
-    "48": "icon/icon48.png",
-    "96": "icon/icon96.png",
-    "128": "icon/icon128.png"
+    "16": "logo16.png",
+    "48": "logo48.png",
+    "128": "logo128.png"
   },
   "content_scripts": [
     {
       "matches": ["https://x.com/*", "https://twitter.com/*"],
       "js": [
-        "scripts/main.js"
+        "scripts/communitiesExplore.js",
+        "scripts/communitiesSuggested.js",
+        "scripts/communitiesSuggestedMore.js",
+        "scripts/home.js",
+        "scripts/startUp.js",
+        "scripts/stopWatchToggle.js",
+        "scripts/sideBlocking.js",
+        "scripts/cheatBlocker.js",
+        "scripts/autoclickOnce.js",
+        "scripts/replaceFaviconNotyNumber.js",
+        "main.js"
       ]
     }
   ],

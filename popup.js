@@ -1,57 +1,62 @@
+"use strict";
+
+function updateToggleText(hideFeed) {
+  const toggleElement = document.getElementById("toggOnOff");
+  const switchElement = document.querySelector(".switch");
+  toggleElement.innerHTML = hideFeed
+    ? "Display Content <strong>On</strong>"
+    : "Display Content <strong>Off</strong>";
+
+  switchElement.title = hideFeed
+    ? "View the content of the accounts you follow and bookmarks."
+    : "Don't view any content.";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  const checkboxSubs = document.getElementById("checkbox-subs");
 
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  const radios     = document.querySelectorAll('input[name="displayTheme"]');
+  // Initialen Wert aus dem Storage abrufen
+  chrome.storage.local.get(["hideFeed"], (res) => {
+    const hideFeed = res.hideFeed ?? false; // Setzt auf false, wenn nicht gesetzt
+    checkboxSubs.checked = hideFeed;
+    updateToggleText(hideFeed);
+  });
 
-  // ── Load stored settings ───────────────────────────────────────────────────
-  chrome.storage.local.get(null, (data) => {
-    checkboxes.forEach(el => {
-      // extensionEnabled defaults to true; all other checkboxes default to false
-      if (el.id === "extensionEnabled") {
-        el.checked = data[el.id] !== false;
+  // Event Listener für Änderungen an der Checkbox
+  checkboxSubs.addEventListener("change", () => {
+    const isChecked = checkboxSubs.checked;
+    chrome.storage.local.set({ hideFeed: isChecked }); // Speichern in Storage
+    updateToggleText(isChecked); // Aktualisiere den Text sofort
+  });
+
+  // Dynamisches Update der Zeit
+  const today = new Date().toISOString().split("T")[0]; // Hol das heutige Datum im Format YYYY-MM-DD
+
+  function updateTodayTime() {
+    chrome.storage.local.get(["wastedTime"], (res) => {
+      const wastedTime = res.wastedTime || {};
+      const todayTime = wastedTime[today] || "No time spent today"; // Fallback-Wert, wenn nichts für heute vorhanden ist
+      if (todayTime == "No time spent today") {
+        document.getElementById("timeConsumption").innerHTML = `${todayTime}`;
       } else {
-        el.checked = !!data[el.id];
+        document.getElementById(
+          "timeConsumption"
+        ).innerHTML = `Time spent today: ${todayTime}`;
       }
     });
-
-    radios.forEach(el => {
-      if (el.id === data.displayTheme) el.checked = true;
-    });
-
-    // Reflect dim mode on the popup body itself
-    applyPopupDimMode(data.displayTheme);
-  });
-
-  // ── Save on change + notify content script ─────────────────────────────────
-  checkboxes.forEach(el => {
-    el.addEventListener("change", () => {
-      const key   = el.id;
-      const value = el.checked;
-      chrome.storage.local.set({ [key]: value });
-      notifyTab({ action: "settingsChanged" });
-    });
-  });
-
-  radios.forEach(el => {
-    el.addEventListener("change", () => {
-      if (!el.checked) return;
-      const value = el.id;
-      chrome.storage.local.set({ displayTheme: value });
-      applyPopupDimMode(value);
-      notifyTab({ action: "settingsChanged" });
-    });
-  });
-
-  // ── Helpers ────────────────────────────────────────────────────────────────
-  function notifyTab(message) {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0]?.id) return;
-      chrome.tabs.sendMessage(tabs[0].id, message);
-    });
   }
 
-  function applyPopupDimMode(theme) {
-    document.body.classList.toggle("dim-mode", theme === "themeDim");
-  }
+  // Update alle 1 Sekunde
+  updateTodayTime(); // Initialer Aufruf
+  setInterval(updateTodayTime, 1000);
+});
 
+document
+  .getElementById("timeConsumption")
+  .addEventListener("click", function () {
+    chrome.tabs.create({ url: chrome.runtime.getURL("/pages/timetable.html") });
+  });
+
+document.getElementById("goToFAQ").addEventListener("click", function () {
+  chrome.tabs.create({ url: chrome.runtime.getURL("/pages/FAQ.html") });
 });
