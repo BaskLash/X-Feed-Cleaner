@@ -1,234 +1,177 @@
 <!DOCTYPE html>
-<html lang="de" data-bs-theme="dark">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X Customizer</title>
-    <!-- Bootstrap 5 CSS via CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-        :root {
-            --x-dark: #000000;
-            --x-dim: #15202b;
-            --x-blue: #1d9bf0;
-            --x-border: #2f3336;
-            --x-border-dim: #38444d;
-            --x-gray: #71767b;
+        [data-bs-theme="dark"] {
+            --bs-body-bg: #000000;
+            --bs-body-color: #e7e9ea;
+            --bs-border-color: #2f3336;
         }
-
         body {
-            width: 500px;
-            padding: 20px;
-            background-color: var(--x-dark);
-            color: #e7e9ea;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            transition: background-color 0.3s ease;
+            width: 380px;
+            background-color: #000000;
         }
-
-        /* DIM MODE Klasse - wird via JS getoggled oder permanent gesetzt */
-        body.dim-mode {
-            background-color: var(--x-dim) !important;
-        }
-        body.dim-mode .header-title, 
-        body.dim-mode .vertical-divider,
-        body.dim-mode .border-top {
-            border-color: var(--x-border-dim) !important;
-        }
-
-        .header-title {
-            font-weight: 800;
-            color: #ffffff;
-            border-bottom: 1px solid var(--x-border);
-        }
-
-        .vertical-divider {
-            border-left: 1px solid var(--x-border);
-            height: 100%;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            color: var(--x-gray);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .form-check-label {
-            font-size: 0.85rem;
-            color: #e7e9ea;
-            cursor: pointer;
-        }
-
         .form-check-input:checked {
-            background-color: var(--x-blue);
-            border-color: var(--x-blue);
+            background-color: #1d9bf0;
+            border-color: #1d9bf0;
         }
-
-        /* Theme Toggle Buttons */
-        .btn-outline-x {
-            color: var(--x-gray);
-            border-color: var(--x-border);
-            font-size: 0.75rem;
-            font-weight: bold;
+        .form-check-input:focus {
+            box-shadow: 0 0 0 0.2rem rgba(29, 155, 240, 0.25);
+            border-color: #1d9bf0;
         }
-        .btn-check:checked + .btn-outline-x {
-            background-color: var(--x-blue);
-            border-color: var(--x-blue);
-            color: white;
-        }
-
-        .btn-x {
-            background-color: var(--x-blue);
-            border: none;
-            border-radius: 20px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .btn-x:hover {
-            background-color: #1a8cd8;
-        }
-
-        .footer-link {
-            color: var(--x-gray);
-            text-decoration: none;
-            font-size: 0.75rem;
-            transition: 0.2s;
-        }
-        .footer-link:hover {
-            color: var(--x-blue);
+        #extensionEnabled.form-check-input:checked {
+            background-color: #1d9bf0;
+            border-color: #1d9bf0;
         }
     </style>
 </head>
-<body>
+<body class="p-3">
 
-    <div class="container-fluid">
-        <!-- Header -->
-        <div class="row mb-3">
-            <div class="col-12 text-center">
-                <h4 class="header-title pb-3 mb-3">X Customizer</h4>
-                
-                <!-- DIM MODE TOGGLE -->
-                <div class="d-flex justify-content-center mb-2">
-                    <div class="btn-group btn-group-sm w-75" role="group">
-                        <input type="radio" class="btn-check" name="displayTheme" id="themeLightsOut" checked>
-                        <label class="btn btn-outline-x" for="themeLightsOut">Lights Out</label>
-                        
-                        <input type="radio" class="btn-check" name="displayTheme" id="themeDim">
-                        <label class="btn btn-outline-x" for="themeDim">Dim Mode</label>
-                    </div>
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+        <h5 class="mb-0 fw-bold text-white">X Customizer</h5>
+        <div class="d-flex align-items-center gap-2">
+            <label class="form-check-label small text-secondary" for="extensionEnabled">Extension</label>
+            <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="extensionEnabled" checked>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feed Section -->
+    <div class="mb-3">
+        <p class="text-uppercase fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 1px; color: #71767b;">Feed</p>
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="autoFollowing">
+                    <label class="form-check-label small" for="autoFollowing">Auto "Following"</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideReposts">
+                    <label class="form-check-label small" for="hideReposts">Hide Reposts</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideNewPosts">
+                    <label class="form-check-label small" for="hideNewPosts">Hide "New posts"</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hidePremiumBanner">
+                    <label class="form-check-label small" for="hidePremiumBanner">Hide Premium</label>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Hauptinhalt: Zwei Spalten -->
-        <div class="row">
-            <!-- LINKE SPALTE -->
-            <div class="col-5">
-                <div class="mb-4">
-                    <span class="section-title">Feed</span>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="autoFollowing">
-                        <label class="form-check-label" for="autoFollowing">Auto "Following"</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hidePremiumBanner">
-                        <label class="form-check-label" for="hidePremiumBanner">Hide Premium</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideNewPosts">
-                        <label class="form-check-label" for="hideNewPosts">Hide "New posts"</label>
-                    </div>
-                </div>
+    <hr class="my-2">
 
-                <div class="mb-4">
-                    <span class="section-title">Sidebar</span>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideTrends">
-                        <label class="form-check-label" for="hideTrends">Hide Trends</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideLive">
-                        <label class="form-check-label" for="hideLive">Hide "Live on X"</label>
-                    </div>
+    <!-- Navigation Section -->
+    <div class="mb-3">
+        <p class="text-uppercase fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 1px; color: #71767b;">Navigation</p>
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideNotifications">
+                    <label class="form-check-label small" for="hideNotifications">Notifications</label>
                 </div>
             </div>
-
-            <!-- TRENNLINIE -->
-            <div class="col-2 d-flex justify-content-center">
-                <div class="vertical-divider"></div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideExplore">
+                    <label class="form-check-label small" for="hideExplore">Explore</label>
+                </div>
             </div>
-
-            <!-- RECHTE SPALTE -->
-            <div class="col-5">
-                <div class="mb-4">
-                    <span class="section-title">Navigation</span>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideNotifications">
-                        <label class="form-check-label" for="hideNotifications">Hide Notif.</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideExplore">
-                        <label class="form-check-label" for="hideExplore">Hide Explore</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideFollow">
-                        <label class="form-check-label" for="hideFollow">Hide Follow</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideGrok">
-                        <label class="form-check-label" for="hideGrok">Hide Grok</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hidePremiumNav">
-                        <label class="form-check-label" for="hidePremiumNav">Hide Premium</label>
-                    </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideGrok">
+                    <label class="form-check-label small" for="hideGrok">Grok</label>
                 </div>
-
-                <div class="mb-4">
-                    <span class="section-title">UI & Community</span>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideCommunitySuggestions">
-                        <label class="form-check-label" for="hideCommunitySuggestions">Hide Suggestions</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="removeTitleCounter">
-                        <label class="form-check-label" for="removeTitleCounter">No Notif-Counter</label>
-                    </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hidePremiumNav">
+                    <label class="form-check-label small" for="hidePremiumNav">Premium</label>
                 </div>
-
-                <div class="mb-4">
-                    <span class="section-title">Distraction Blocking</span>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="redirectFromNotifications">
-                        <label class="form-check-label" for="redirectFromNotifications">Redirect from notifications</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="redirectFromTweets">
-                        <label class="form-check-label" for="redirectFromTweets">Redirect from tweets</label>
-                    </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideFollow">
+                    <label class="form-check-label small" for="hideFollow">Follow</label>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Support / Links Bereich -->
-        <div class="row border-top pt-3 mt-2">
-            <div class="col-12 text-center">
-                <div class="d-flex justify-content-around mb-3">
-                    <a href="https://github.com" target="_blank" class="footer-link">Bugs / Features</a>
-                    <a href="https://github.com" target="_blank" class="footer-link">GitHub Repo</a>
+    <hr class="my-2">
+
+    <!-- Sidebar Section -->
+    <div class="mb-3">
+        <p class="text-uppercase fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 1px; color: #71767b;">Sidebar</p>
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideTrends">
+                    <label class="form-check-label small" for="hideTrends">Trends</label>
                 </div>
-                
-                <a href="https://chromewebstore.google.com..." target="_blank" class="text-decoration-none">
-                    <button class="btn btn-x btn-sm w-100 text-white mb-2">⭐ Rate this Extension</button>
-                </a>
-                
-                <p class="small text-muted" id="nameYear" style="font-size: 0.7rem;"></p>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideLive">
+                    <label class="form-check-label small" for="hideLive">Live on X</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="hideCommunitySuggestions">
+                    <label class="form-check-label small" for="hideCommunitySuggestions">Suggestions</label>
+                </div>
             </div>
         </div>
+    </div>
+
+    <hr class="my-2">
+
+    <!-- UI Section -->
+    <div class="mb-3">
+        <p class="text-uppercase fw-bold mb-2" style="font-size: 0.65rem; letter-spacing: 1px; color: #71767b;">UI</p>
+        <div class="row g-2">
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="removeTitleCounter">
+                    <label class="form-check-label small" for="removeTitleCounter">No Notif. Counter</label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="dimMode">
+                    <label class="form-check-label small" for="dimMode">Dim Mode</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="border-top pt-3 mt-1">
+        <div class="d-flex justify-content-between mb-2">
+            <a href="https://github.com/BaskLash/X-Feed-Cleaner/issues" target="_blank"
+               class="text-decoration-none small" style="color: #71767b;">Bugs / Features</a>
+            <a href="https://github.com/BaskLash/X-Feed-Cleaner" target="_blank"
+               class="text-decoration-none small" style="color: #71767b;">GitHub</a>
+        </div>
+        <a href="https://chromewebstore.google.com/detail/x-customizer/biiehfmkkfdbklplegkpfombnbpijolj" target="_blank" class="text-decoration-none">
+            <button class="btn btn-sm w-100 text-white fw-bold" style="background-color: #1d9bf0; border: none; border-radius: 20px;">&#11088; Rate this Extension</button>
+        </a>
+        <p class="text-center mt-2 mb-0" id="nameYear" style="font-size: 0.65rem; color: #71767b;"></p>
     </div>
 
     <script src="popup.js" defer></script>

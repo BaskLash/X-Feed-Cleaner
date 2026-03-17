@@ -1,53 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Alle relevanten Felder
-  const fields = [
-    ...document.querySelectorAll('input[type="checkbox"]'),
-    ...document.querySelectorAll('input[name="displayTheme"]')
-  ];
+  const fields = document.querySelectorAll('input[type="checkbox"]');
 
-  // 1. Alles laden
+  // Load all settings from storage and populate the UI
   chrome.storage.local.get(null, (data) => {
     fields.forEach(el => {
-      if (el.type === "checkbox") {
+      if (el.id === "extensionEnabled") {
+        // Default to true (enabled) if not set
+        el.checked = data[el.id] !== false;
+      } else {
         el.checked = !!data[el.id];
-      } else if (el.type === "radio") {
-        if (el.id === data.displayTheme) el.checked = true;
       }
     });
   });
 
-  // 2. Bei jeder Änderung speichern
+  // On any change: save to storage and notify the active tab's content script
   fields.forEach(el => {
     el.addEventListener("change", () => {
-      if (el.type === "checkbox") {
-        chrome.storage.local.set({ [el.id]: el.checked });
-      } else if (el.type === "radio" && el.checked) {
-        chrome.storage.local.set({ displayTheme: el.id });
-      }
-    });
-  });
+      const key = el.id;
+      const value = el.checked;
 
-  // Neu: Bei jeder Checkbox-Änderung → speichern + sofort ans Content-Script senden
-checkboxes.forEach(checkbox => {
-  checkbox.addEventListener("change", () => {
-    const key = checkbox.id;
-    const value = checkbox.checked;
+      chrome.storage.local.set({ [key]: value });
 
-    // 1. Speichern (wie bisher)
-    chrome.storage.local.set({ [key]: value });
-
-    // 2. Sofort ans aktive Tab senden
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0]?.id) return;
-
-      chrome.tabs.sendMessage(tabs[0].id, {
-        action: "toggleSetting",
-        key: key,
-        value: value
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (!tabs[0]?.id) return;
+        chrome.tabs.sendMessage(tabs[0].id, {
+          action: "toggleSetting",
+          key: key,
+          value: value
+        });
       });
     });
   });
-});
 
 });
