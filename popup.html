@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de" data-bs-theme="dark">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,11 +25,10 @@
             transition: background-color 0.3s ease;
         }
 
-        /* DIM MODE Klasse - wird via JS getoggled oder permanent gesetzt */
         body.dim-mode {
             background-color: var(--x-dim) !important;
         }
-        body.dim-mode .header-title, 
+        body.dim-mode .header-title,
         body.dim-mode .vertical-divider,
         body.dim-mode .border-top {
             border-color: var(--x-border-dim) !important;
@@ -110,13 +109,22 @@
         <div class="row mb-3">
             <div class="col-12 text-center">
                 <h4 class="header-title pb-3 mb-3">X Customizer</h4>
-                
+
+                <!-- MASTER TOGGLE -->
+                <div class="d-flex justify-content-between align-items-center rounded mb-3 px-2 py-2" style="background: rgba(255,255,255,0.05); border: 1px solid var(--x-border);">
+                    <span style="font-size: 0.9rem; font-weight: 700; color: #e7e9ea;">Extension Active</span>
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" id="extensionEnabled" role="switch"
+                               style="width: 2.5em; height: 1.25em; cursor: pointer;">
+                    </div>
+                </div>
+
                 <!-- DIM MODE TOGGLE -->
                 <div class="d-flex justify-content-center mb-2">
                     <div class="btn-group btn-group-sm w-75" role="group">
                         <input type="radio" class="btn-check" name="displayTheme" id="themeLightsOut" checked>
                         <label class="btn btn-outline-x" for="themeLightsOut">Lights Out</label>
-                        
+
                         <input type="radio" class="btn-check" name="displayTheme" id="themeDim">
                         <label class="btn btn-outline-x" for="themeDim">Dim Mode</label>
                     </div>
@@ -124,15 +132,19 @@
             </div>
         </div>
 
-        <!-- Hauptinhalt: Zwei Spalten -->
+        <!-- Main content: Two columns -->
         <div class="row">
-            <!-- LINKE SPALTE -->
+            <!-- LEFT COLUMN -->
             <div class="col-5">
                 <div class="mb-4">
                     <span class="section-title">Feed</span>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="autoFollowing">
                         <label class="form-check-label" for="autoFollowing">Auto "Following"</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="hideReposts">
+                        <label class="form-check-label" for="hideReposts">Hide Reposts</label>
                     </div>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="hidePremiumBanner">
@@ -154,15 +166,19 @@
                         <input class="form-check-input" type="checkbox" id="hideLive">
                         <label class="form-check-label" for="hideLive">Hide "Live on X"</label>
                     </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="hideCommunitySuggestions">
+                        <label class="form-check-label" for="hideCommunitySuggestions">Hide Suggestions</label>
+                    </div>
                 </div>
             </div>
 
-            <!-- TRENNLINIE -->
+            <!-- DIVIDER -->
             <div class="col-2 d-flex justify-content-center">
                 <div class="vertical-divider"></div>
             </div>
 
-            <!-- RECHTE SPALTE -->
+            <!-- RIGHT COLUMN -->
             <div class="col-5">
                 <div class="mb-4">
                     <span class="section-title">Navigation</span>
@@ -189,11 +205,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <span class="section-title">UI & Community</span>
-                    <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="hideCommunitySuggestions">
-                        <label class="form-check-label" for="hideCommunitySuggestions">Hide Suggestions</label>
-                    </div>
+                    <span class="section-title">UI</span>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="removeTitleCounter">
                         <label class="form-check-label" for="removeTitleCounter">No Notif-Counter</label>
@@ -204,28 +216,28 @@
                     <span class="section-title">Distraction Blocking</span>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="redirectFromNotifications">
-                        <label class="form-check-label" for="redirectFromNotifications">Redirect from notifications</label>
+                        <label class="form-check-label" for="redirectFromNotifications">Redirect from Notif.</label>
                     </div>
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="checkbox" id="redirectFromTweets">
-                        <label class="form-check-label" for="redirectFromTweets">Redirect from tweets</label>
+                        <label class="form-check-label" for="redirectFromTweets">Redirect from Tweets</label>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Support / Links Bereich -->
+        <!-- Footer -->
         <div class="row border-top pt-3 mt-2">
             <div class="col-12 text-center">
                 <div class="d-flex justify-content-around mb-3">
-                    <a href="https://github.com" target="_blank" class="footer-link">Bugs / Features</a>
-                    <a href="https://github.com" target="_blank" class="footer-link">GitHub Repo</a>
+                    <a href="https://github.com/BaskLash/X-Feed-Cleaner/issues" target="_blank" class="footer-link">Bugs / Features</a>
+                    <a href="https://github.com/BaskLash/X-Feed-Cleaner" target="_blank" class="footer-link">GitHub Repo</a>
                 </div>
-                
-                <a href="https://chromewebstore.google.com..." target="_blank" class="text-decoration-none">
+
+                <a href="https://chromewebstore.google.com/detail/x-customizer/your-extension-id" target="_blank" class="text-decoration-none">
                     <button class="btn btn-x btn-sm w-100 text-white mb-2">⭐ Rate this Extension</button>
                 </a>
-                
+
                 <p class="small text-muted" id="nameYear" style="font-size: 0.7rem;"></p>
             </div>
         </div>

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "X Customizer",
-  "version": "1.0.19",
+  "version": "2.0.0",
   "description": "📽️ **Keep Focused, Stay Productive** Removes distracting elements inside X.com (formerly Twitter) for a cleaner experience.",
   "action": {
     "default_popup": "popup.html"
